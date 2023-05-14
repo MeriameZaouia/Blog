@@ -1,0 +1,9 @@
+GET http://localhost:3000/categories?take=10&skip=0
+###
+GET http://localhost:3000/categories/1
+###
+POST http://localhost:3000/categories
+###
+PATCH http://localhost:3000/categories
+###
+DELETE  http://localhost:3000/categories/1

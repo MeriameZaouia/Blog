@@ -1,0 +1,9 @@
+GET http://localhost:3000/commentaires?take=10&skip=0
+###
+GET http://localhost:3000/commentaires/1
+###
+POST http://localhost:3000/commentaires
+###
+PATCH http://localhost:3000/commentaires
+###
+DELETE  http://localhost:3000/commentaires/1
