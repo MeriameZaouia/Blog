@@ -1,9 +1,54 @@
-GET http://localhost:3000/categories?take=10&skip=0
+
+
+
+
+
+
+
+
+
+
+
+GET http://localhost:3000/categories?take=2
 ###
 GET http://localhost:3000/categories/1
 ###
+
+
+
+
+
+
+
+
+
+
+
+
 POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "nom": "New categorie"
+}
+
+
+
+
+
+
 ###
 PATCH http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "id":1,
+    "nom": "Updated categorie"
+}
+
+
+
+
+
 ###
-DELETE  http://localhost:3000/categories/1
+DELETE  http://localhost:3000/categories/5

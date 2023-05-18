@@ -1,9 +1,57 @@
-GET http://localhost:3000/articles?take=10&skip=0
+GET http://localhost:3000/articles?take=1
+
+
 ###
-GET http://localhost:3000/articles/1
+GET http://localhost:3000/articles/6
+
 ###
-POST http://localhost:3000/articles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+POST http://localhost:3000/articles HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "New Article",
+    "content": "This is a new article.",
+    "image": "https://example.com/image.jpg",
+    "userId": 1,
+    "categories":[1,2]
+}
+
+
+###
+DELETE  http://localhost:3000/articles/9
 ###
 PATCH http://localhost:3000/articles
-###
-DELETE  http://localhost:3000/articles/1
+Content-Type: application/json
+
+{
+    "id":9,
+    "title": "Updated Article",
+    "content": "This article has been updated.",
+    "image": "https://example.com/new-image.jpg",
+    "published": true
+}
+
+

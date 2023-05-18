@@ -1,9 +1,30 @@
-GET http://localhost:3000/commentaires?take=10&skip=0
+
+
+
+GET http://localhost:3000/commentaires?take=1
 ###
 GET http://localhost:3000/commentaires/1
+
 ###
 POST http://localhost:3000/commentaires
+Content-Type: application/json
+
+{
+    "email":"meriamezaouia9999@gmail.com",
+    "content": "content du commentaire",
+    "articleId":12
+}
+
+
 ###
 PATCH http://localhost:3000/commentaires
+Content-Type: application/json
+
+{   
+    "id":2,
+    "content": "Updated content du commentaire"
+}
+
+
 ###
-DELETE  http://localhost:3000/commentaires/1
+DELETE  http://localhost:3000/commentaires/3

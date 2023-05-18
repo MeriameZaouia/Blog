@@ -1,0 +1,26 @@
+GET http://localhost:3000/users
+###
+GET http://localhost:3000/users/1
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "nom":"hanane",
+    "email": "hanaezaouia@gmail.com",
+    "password":"ABCDEF"
+}
+
+###
+PATCH http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "id":6,
+    "email": "hanaezaouia1@gmail.com",
+    "password":"ABCDEF123"
+}
+
+
+###
+DELETE  http://localhost:3000/users/6
