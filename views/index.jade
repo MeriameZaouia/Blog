@@ -1,5 +1,100 @@
-extends layout
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title My blog
+    link(rel="stylesheet", href="stylesheets/style.css")
+    link(rel="icon", href="images/logo.png")
+    // import font family
+    link(rel="preconnect", href="https://fonts.googleapis.com")
+    link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin="")
+    link(href="https://fonts.googleapis.com/css2?family=Laila:wght@500&display=swap", rel="stylesheet")
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script(src="javascripts/script.js")
+  body
+    // navigation
+    // logo
+    img(src="images/logo.png", alt="logo", class="logo")
+    // menu
+    ul.menu
+      li
+        a(href="#") Home
+      li
+        a(href="#") About
+      li
+        a(href="#") Contact
+      li
+        a(href="#" class="nav-connecte") Se connecter
 
-block content
-  h1= title
-  p Welcome to #{title}
+    div.container
+      div.row
+        div.col-lg-9.col-md-12.col-sm-12
+
+
+          div#blog
+            // heading
+            div.blog-heading
+              h1 La source d'inspiration et de connaissances infinies !
+
+            // filter
+            ul.blog-filter#categorie-list
+              li.list.blog-filter-active(data-filter="All") All*
+
+        div.blog-container
+          // Loop through each article
+          each article in articles
+            div.blog-box(class=article.id)
+              // Informations de l'utilisateur
+              div.user-info
+                img(src="https://picsum.photos/50/50?1", alt="User Image")
+                div.user-details
+                  span.user-name= article.User.nom
+                  br
+                  span.post-time= article.createdAt
+
+              // Contenu
+              div.title
+                h2= article.title
+
+              // Image
+              div.blog-img
+                img(src=article.image, alt="Blog Image")
+
+              div#contenu
+                | #{article.content}
+
+              button#bouton-lire Lire la suite
+
+              // Détails des commentaires
+              div.comment-details
+                span.comment-count #{article.comments.length} Commentaires
+                
+
+              // Liste des commentaires
+              div.comment-list
+                table.comment-table
+                  thead
+                    tr
+                      th 
+                      th 
+                  tbody
+                    each comment in article.comments
+                      tr
+                        td
+                          img(src="https://picsum.photos/50/50?2", alt="User Image")
+                          span.comment-user-name= comment.email
+                        td.comment-content= comment.content
+                    
+
+              // Formulaire d'ajout de commentaire
+              form(action="/add-comment" method="POST")
+                input(type="text" name="comment" placeholder="Ajouter un commentaire")
+                button(type="submit") Ajouter
+
+        div.col-lg-3  
+          
+          div
+            p Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate nisi alias et officia aut omnis inventore laborum tenetur magnam aliquid optio illo facilis, velit praesentium, eius, nobis veritatis est doloribus. 

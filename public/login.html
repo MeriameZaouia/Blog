@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page d'accueil</title>
+</head>
+<body>
+  <h1>Page d'accueil</h1>
+
+  <button id="logoutButton">Se déconnecter</button>
+
+  <h2>Inscription</h2>
+  <form id="signupForm">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" required><br>
+
+    <label for="email">Email :</label>
+    <input type="email" id="email" required><br>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" required><br>
+
+    <button type="submit">S'inscrire</button>
+  </form>
+
+  <h2>Connexion</h2>
+  <form id="loginForm">
+    <label for="loginEmail">Email :</label>
+    <input type="email" id="loginEmail" required><br>
+
+    <label for="loginPassword">Mot de passe :</label>
+    <input type="password" id="loginPassword" required><br>
+
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <script>
+    // Fonction pour envoyer la requête d'inscription
+    function signup(event) {
+      event.preventDefault();
+
+      const nom = document.getElementById('nom').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nom,
+          email,
+          password
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Traitez la réponse de la requête ici
+          console.log(data);
+          window.location.href = '/';
+        })
+        .catch(error => {
+          // Traitez les erreurs ici
+          console.error(error);
+        });
+    }
+
+    // Fonction pour envoyer la requête de connexion
+    function login(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Traitez la réponse de la requête ici
+          console.log(data);
+          if (data.token) {
+          // Redirigez l'utilisateur vers la page d'accueil
+          window.location.href = '/';
+         }
+        })
+        .catch(error => {
+          // Traitez les erreurs ici
+          console.error(error);
+        });
+    }
+
+    // Ajouter les écouteurs d'événements aux formulaires
+    document.getElementById('signupForm').addEventListener('submit', signup);
+    document.getElementById('loginForm').addEventListener('submit', login);
+
+
+    function logout() {
+      fetch('http://localhost:3000/logout', {
+        method: 'POST'
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Traitez la réponse de la requête ici
+          console.log(data);
+
+          // Vérifiez si la déconnexion est réussie
+          if (data === 'Déconnexion réussie') {
+            // Redirigez l'utilisateur vers la page d'accueil
+            window.location.href = '/';
+          }
+        })
+        .catch(error => {
+          // Traitez les erreurs ici
+          console.error(error);
+        });
+    }
+
+    // Ajouter un écouteur d'événement au bouton de déconnexion
+    document.getElementById('logoutButton').addEventListener('click', logout);
+  </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ function AddArticle(article){
 
 function GetArticle(id){
     
-    return prisma.Article.findUnique({where:{id}})
+    return prisma.Article.findUnique({where:{id:+id}})
 }
 
 

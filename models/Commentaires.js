@@ -11,7 +11,7 @@ function AddCommentaire(commentaire){
 
 function GetCommentaire(id){
     
-    return prisma.Commentaire.findUnique({where:{id}})
+    return prisma.Commentaire.findUnique({where:{id:id}})
 }
 
 

@@ -16,11 +16,11 @@ PATCH http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "id":6,
+    "id":141,
     "email": "hanaezaouia1@gmail.com",
     "password":"ABCDEF123"
 }
 
 
 ###
-DELETE  http://localhost:3000/users/6
+DELETE  http://localhost:3000/users/145

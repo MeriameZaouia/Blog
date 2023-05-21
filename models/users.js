@@ -32,11 +32,34 @@ function GetUsers(take, skip) {
 
 
 
-function DeleteUser(id){
+async function DeleteUser(id) {
+  try {
+    // Supprimer les commentaires de l'utilisateur
+    await prisma.Commentaire.deleteMany({
+      where: {
+        email : GetUser(id).email,
+      },
+    });
 
-    return prisma.Utilisateur.delete({
-        where: {id:+id},
-      });
+    // Supprimer les articles de l'utilisateur
+    await prisma.Article.deleteMany({
+      where: {
+        userId: +id,
+      },
+    });
+
+    // Supprimer l'utilisateur
+    await prisma.Utilisateur.delete({
+      where: {
+        id: +id,
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Une erreur s\'est produite lors de la suppression de l\'utilisateur');
+  }
 }
 
 

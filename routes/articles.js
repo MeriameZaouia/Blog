@@ -2,18 +2,36 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const { sequelize, Op } = require('sequelize');
-const {GetArticle, GetArticles, DeleteArticle, UpdateArticle, } = require('../models/articles.js')
+const jwt = require('jsonwebtoken');
+const { GetArticle, GetArticles, DeleteArticle, UpdateArticle } = require('../models/articles.js');
 
-var app = require('../app');
+const checkAuth = (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      req.isAuthenticated = false;
+      return next();
+    }
+
+    const decodedToken = jwt.verify(token, 'votre_secret_key');
+    req.userId = decodedToken.userId;
+    req.isAuthenticated = true;
+
+    return next();
+  } catch (error) {
+    req.isAuthenticated = false;
+    return next();
+  }
+};
 
 router.get('/', (req, res) => {
-  GetArticles(req.query.take,req.query.skip)
+  GetArticles(req.query.take, req.query.skip)
     .then(articles => res.json(articles))
     .catch(err => {
-      console.error(err)
-      res.send('Erreur!!!!!!!!!!!!')
-    })
+      console.error(err);
+      res.status(500).send('Une erreur s\'est produite lors de la récupération des articles.');
+    });
 });
 
 router.get('/:id', async (req, res) => {
@@ -22,43 +40,49 @@ router.get('/:id', async (req, res) => {
     if (article) {
       res.send(article);
     } else {
-      res.status(404).send('Article not found');
+      res.status(404).send('Article non trouvé.');
     }
   } catch (err) {
-    console.error(err)
-    res.send('Erreur!!!!!!!!!!!!!!!!!!!!!!');
+    console.error(err);
+    res.status(500).send('Une erreur s\'est produite lors de la récupération de l\'article.');
   }
 });
 
-
-
-router.post('/', async (req, res) => {
+router.get('/categories/:id', async (req, res) => {
   try {
-    let { title, content, image, userId, categories } = req.body;
-    let user = await prisma.Utilisateur.findUnique({ where: { id: userId } });
+    const article = await prisma.Article.findOne({ where: { id: +req.params.id }, include: { categories: true } });
+    if (article) {
+      res.send(article.categories);
+    } else {
+      res.status(404).send('Article non trouvé.');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Une erreur s\'est produite lors de la récupération des catégories de l\'article.');
+  }
+});
+
+router.post('/', checkAuth, async (req, res) => {
+  try {
+    if (!req.isAuthenticated) {
+      return res.redirect('/form');
+    }
+    const { title, content, image, categories } = req.body;
+
+    const user = await prisma.Utilisateur.findUnique({ where: { id: req.userId } });
     if (user.role !== 'AUTHOR') {
       return res.status(403).json({ message: 'Seuls les utilisateurs avec le rôle AUTHOR peuvent créer des articles.' });
     }
-    // Obtenez les catégories correspondantes
-    let categoriesCorrespondantes = await prisma.Categorie.findMany({
-      where: {
-        id: {
-          [Op.in]: categories,
-        },
-      },
-    });
-    // Créez un nouvel article
-    let nouvelArticle = await prisma.Article.create({
-        data: {
+
+    const categoriesCorrespondantes = await prisma.Categorie.findMany({ where: { id: { in: categories } } });
+
+    const nouvelArticle = await prisma.Article.create({
+      data: {
         title: title,
         content: content,
         image: image,
-        User: {
-          connect: { id: userId }, // Utilisez connect pour connecter l'utilisateur existant
-        },
-        categories: {
-          connect: categoriesCorrespondantes.map((categorie) => ({ id: categorie.id })),
-        },
+        userId: req.userId,
+        categories: { connect: categoriesCorrespondantes.map(categorie => ({ id: categorie.id })) },
       },
     });
 
@@ -69,50 +93,57 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-
-
-router.patch('/', async (req, res) => {
+router.patch('/', checkAuth, async (req, res) => {
   try {
+    if (!req.isAuthenticated) {
+      return res.redirect('/form');
+    }
+
     const article = await GetArticle(+req.body.id);
     if (!article) {
-      return res.status(404).send(`Article with id ${req.body.id} not found`);
+      return res.status(404).send(`Article avec l'ID ${req.body.id} introuvable`);
     }
+
+    const user = await prisma.Utilisateur.findUnique({ where: { id: req.userId } });
+    if (article.userId !== user.id && user.role !== 'ADMIN') {
+      return res.status(403).send('Vous n\'êtes pas autorisé à modifier cet article');
+    }
+
     const updatedArticle = await UpdateArticle(req.body);
     res.send(updatedArticle);
   } catch (err) {
-    console.error(err)
-    res.send('Erreur!!!!!!!!!!!!!!!!!!!!!!');
+    console.error(err);
+    res.status(500).send('Une erreur s\'est produite lors de la mise à jour de l\'article');
   }
 });
 
-
-
-router.delete('/:id', async (req, res) => {
-
+router.delete('/:id', checkAuth, async (req, res) => {
   try {
+    if (!req.isAuthenticated) {
+      return res.redirect('/form');
+    }
+
     const article = await prisma.Article.findUnique({
       where: {
         id: +req.params.id,
       },
     });
     if (!article) {
-      res.status(404).send(`Article with ID ${req.params.id} not found`);
+      return res.status(404).send(`Article avec l'ID ${req.params.id} introuvable`);
     }
-    else {
-      const deleteArticle = await DeleteArticle(+req.params.id);
-      res.send(`Article with ID ${req.params.id} has been deleted`);
+
+    const user = await prisma.Utilisateur.findUnique({ where: { id: req.userId } });
+    if (article.userId !== user.id && user.role !== 'ADMIN') {
+      return res.status(403).send('Vous n\'êtes pas autorisé à supprimer cet article');
     }
+
+    await DeleteArticle(+req.params.id);
+    res.send(`L'article avec l'ID ${req.params.id} a été supprimé`);
   } catch (err) {
-    console.error(err)
-    res.send('Erreur!!!!!!!!!!!!!!!!!!!!!!');
+    console.error(err);
+    res.status(500).send('Une erreur s\'est produite lors de la suppression de l\'article');
   }
 });
 
-
 module.exports = router;
-
-
-
-
 

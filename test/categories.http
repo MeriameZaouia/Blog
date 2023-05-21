@@ -42,7 +42,7 @@ PATCH http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "id":1,
+    "id":58,
     "nom": "Updated categorie"
 }
 
@@ -51,4 +51,4 @@ Content-Type: application/json
 
 
 ###
-DELETE  http://localhost:3000/categories/5
+DELETE  http://localhost:3000/categories/58

@@ -1,0 +1,300 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Laila', sans-serif;
+    background-color: white; /* Couleur d'arriÃ¨re-plan gris clair */
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  ul{
+    list-style: none;
+  }
+  
+  .menu {
+    background-color: #37474F; /* Couleur de fond de la barre de navigation */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Ajout d'alignement vertical */
+    padding: 10px; /* RÃ©duction de l'espacement */
+  }
+  
+  
+  .menu li{
+   margin: 10px 0px;
+  }
+  .menu li a {
+    padding: 12px 20px;
+    color: #FFFFFF; /* Couleur du texte blanc */
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: opacity 0.3s ease;
+  }
+  
+  .menu li a:hover {
+    opacity: 0.8;
+  
+  }
+  
+  .nav-connecte {
+    background-color: #f96407; /* Couleur de fond du lien de connexion */
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #FFFFFF;
+  }
+  
+  .logo {
+    width: 200px;
+    height: 180px;
+    margin: -20px auto; /* RÃ©duction de la marge autour du logo et centrage horizontal */
+  }
+  
+  
+  /* blog */
+  
+  #blog{
+    justify-content: center;
+   
+  
+  }
+  
+  /* ::selection{
+    background-color: black;
+    color: white;
+  } */
+  
+  
+  
+  .blog-heading h1{
+    font-size:3.6rem;
+    color: #2e2f2f;
+    line-height: 100px;
+    text-transform: uppercase;
+  }
+  
+  @media (min-width: 1200px) {
+    /* Styles for larger screens */
+    .blog-heading h1 {
+      font-size: 3.8rem;
+    }
+  }
+  
+  
+  
+  .blog-filter{
+    display: flex;
+    align-items: center;
+    color: #37474F;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  
+  
+  .blog-filter li{
+    color:#37474F;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin:  0px 5px;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  
+  .blog-filter li:hover{
+    opacity: 0.7;
+    transform: all ease 0.3s;
+  
+  }
+  
+  .blog-filter-active{
+    border-bottom: 1px solid #f96407;
+  }
+  
+  /* Style pour le conteneur principal */
+  .blog-container {
+    max-width: 850px;
+ 
+    padding: 10px;
+   
+    font-family:  'Laila', sans-serif;;
+  }
+  
+  /* Style pour la boÃ®te du blog */
+  .blog-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style pour les informations de l'utilisateur */
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-info img {
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    color: #f96407;
+  }
+  
+  .post-time {
+    color: #888;
+  }
+  
+  /* Style pour le titre */
+  .title {
+    margin-top: 20px;
+    
+  }
+  
+  .title h2 {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  /* Style pour le contenu */
+  #contenu {
+    margin-top: 10px;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  /* Style pour le bouton "Lire la suite" */
+  .read-more {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  #bouton-lire {
+    display: none;
+    padding: 10px 20px;
+    background-color: #f96407;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Style pour l'image */
+  .blog-img {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .blog-img img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style pour les dÃ©tails des commentaires */
+  .comment-details {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .comment-count {
+    color: #888;
+    margin-right: 10px;
+  }
+  
+  .add-comment-btn {
+    padding: 8px 16px;
+    background-color: #37474F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+/* Style pour les commentaires */
+.comment-list {
+  list-style: none;
+  padding: 0;
+  
+}
+
+.comment-item {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  
+}
+
+.comment-user-info {
+  margin-right: 10px;
+}
+
+.comment-user-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.comment-content {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.comment-user-name {
+  font-weight: bold;
+}
+
+/* Style pour le formulaire d'ajout de commentaire */
+form {
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #f96407;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #37474F;
+}
+
+  
+  
+  
+  
+  
+  
+  /******************************************************************/
+  
+  
+  
+  
